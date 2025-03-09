@@ -90,7 +90,7 @@ const Main = styled.div`
   min-height: 84.3vh;
   padding-top: 30px;
   @media (max-width: 710px) {
-    padding-top: 320px;
+    padding-top: 30px;
   }
 `;
 const Card = styled.div`
