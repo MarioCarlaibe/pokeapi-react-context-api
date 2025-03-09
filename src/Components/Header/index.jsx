@@ -1,13 +1,14 @@
 import styled from "styled-components";
 import { useContext } from "react";
 import { ThemeContext } from "../Contexts/themeContext";
+import logo from '../../Images/pocketcards-logo.png'
 
 export const HeaderTitle = () => {
   const { toggleTheme, toggleIcon } = useContext(ThemeContext);
   return (
     <BgHeader>
       <Header>
-        <Img src="./src/images/pocketcards-logo.png" alt="logo" />
+        <Img src={logo} alt="logo" />
         <h1>
           <i>Pocket Cards</i>
         </h1>
@@ -17,7 +18,7 @@ export const HeaderTitle = () => {
   );
 };
 const BgHeader = styled.div`
-  height: 150px;
+  min-height: 150px;
   background: ${({ theme }) => theme.bgmain};
 `;
 const Header = styled.header`
