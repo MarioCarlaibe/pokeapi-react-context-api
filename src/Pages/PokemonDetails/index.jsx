@@ -86,25 +86,22 @@ const Main = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  background: ${({ theme }) => theme.bgmain};
-  min-height: 84.3vh;
   padding-top: 30px;
-  @media (max-width: 710px) {
-    padding-top: 30px;
-  }
 `;
 const Card = styled.div`
   display: flex;
   align-items: center;
   padding: 20px;
-  width: 800px;
+  max-width: 800px;
   min-height: 540px;
   background: ${({ theme }) => theme.bgcard};
+  color: ${({ theme }) => theme.color};
   border-radius: 10px;
   box-shadow: 0 0 10px ${({ theme }) => theme.color};
   padding: 30px;
   gap: 50px;
   border: 2px solid ${({ theme }) => theme.color};
+  margin: 5px;
   & img {
     width: 180px;
     margin: 20px;
@@ -119,7 +116,6 @@ const Card = styled.div`
     text-transform: uppercase;
   }
   @media (max-width: 830px) {
-    width: 95%;
     flex-direction: column;
   }
 `;
@@ -139,11 +135,12 @@ const Button = styled.button`
   padding: 10px;
   border-radius: 10px;
   background: ${({ theme }) => theme.bgmain};
-  border: none;
+  color: ${({ theme }) => theme.color};
   font-size: 20px;
   font-weight: 900;
   cursor: pointer;
   border: 2px solid ${({ theme }) => theme.color};
+  transition: 0.2s;
   &:hover {
     scale: 1.1;
   }

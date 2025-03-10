@@ -28,11 +28,12 @@ const GlobalStyled = createGlobalStyle`
     box-sizing: border-box;
     font-family: "Lato", sans-serif;
     text-decoration: none;
-    color: ${({ theme }) => theme.color};
-    transition: 0.3s;
   }
   ul{
     list-style: none;
+  }
+  Body{
+    background: ${({ theme }) => theme.bgmain};
   }
 `;
 

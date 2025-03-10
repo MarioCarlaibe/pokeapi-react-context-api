@@ -6,7 +6,6 @@ import logo from '../../Images/pocketcards-logo.png'
 export const HeaderTitle = () => {
   const { toggleTheme, toggleIcon } = useContext(ThemeContext);
   return (
-    <BgHeader>
       <Header>
         <Img src={logo} alt="logo" />
         <h1>
@@ -14,19 +13,16 @@ export const HeaderTitle = () => {
         </h1>
         <Button onClick={toggleTheme}>{toggleIcon} Change Theme</Button>
       </Header>
-    </BgHeader>
   );
 };
-const BgHeader = styled.div`
-  min-height: 150px;
-  background: ${({ theme }) => theme.bgmain};
-`;
 const Header = styled.header`
+  margin: 10px 30px;
   display: flex;
   align-items: center;
   justify-content: center;
   background: ${({ theme }) => theme.bgheader};
-  width: 100%;
+  color: ${({ theme }) => theme.color};
+  max-width: 100vw;
   padding: 20px;
   gap: 30px;
   border: 4px solid ${({ theme }) => theme.color};
@@ -35,7 +31,7 @@ const Header = styled.header`
     font-size: 40px;
     font-weight: 900;
   }
-  @media (max-width: 710px) {
+  @media (max-width: 765px) {
     flex-direction: column;
   }
 `;
@@ -52,11 +48,12 @@ const Button = styled.button`
   padding: 10px;
   border-radius: 10px;
   background: ${({ theme }) => theme.bgbutton};
-  border: none;
+  color: ${({ theme }) => theme.color};
   font-size: 20px;
   font-weight: 900;
   cursor: pointer;
   border: 2px solid ${({ theme }) => theme.color};
+  transition: 0.2s;
   &:hover {
     scale: 1.1;
   }
