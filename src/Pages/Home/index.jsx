@@ -8,52 +8,102 @@ export const Home = () => {
   const [offset, setOffset] = useState(0);
   const [selectedType, setSelectedType] = useState("");
 
-  const fetchPokemonsByType = async (type, newOffset = 0) => {
+  const fetchPokemons = async (newOffset = 0, isLoadMore = false) => {
     try {
-      const response = await axios.get(`https://pokeapi.co/api/v2/type/${type}`);
-      const allPokemonOfType = response.data.pokemon.map(p => p.pokemon);
+      const response = await axios.get(
+        `https://pokeapi.co/api/v2/pokemon?limit=10&offset=${newOffset}`
+      );
+
+      const pokemonData = await Promise.all(
+        response.data.results.map(async (pokemon) => {
+          const details = await axios.get(pokemon.url);
+          return {
+            name: details.data.name,
+            image: details.data.sprites.front_default,
+            id: details.data.id,
+          };
+        })
+      );
+
+      if (isLoadMore) {
+        setPokemons((prev) => [...prev, ...pokemonData]);
+      } else {
+        setPokemons(pokemonData);
+      }
+    } catch (error) {
+      console.error("Erro ao buscar Pokémon", error);
+    }
+  };
+
+  const fetchPokemonsByType = async (type, newOffset = 0, isLoadMore = false) => {
+    try {
+      const response = await axios.get(
+        `https://pokeapi.co/api/v2/type/${type}`
+      );
+      const allPokemonOfType = response.data.pokemon.map((p) => p.pokemon);
 
       if (allPokemonOfType.length === 0) {
         setPokemons([]);
         return;
       }
 
-      const selectedPokemons = allPokemonOfType.slice(newOffset, newOffset + 10);
+      const selectedPokemons = allPokemonOfType.slice(
+        newOffset,
+        newOffset + 10
+      );
 
-      const pokemonData = await Promise.all(selectedPokemons.map(async (pokemon) => {
-        const details = await axios.get(pokemon.url);
-        return {
-          name: details.data.name,
-          image: details.data.sprites.front_default,
-          id: details.data.id
-        };
-      }));
+      const pokemonData = await Promise.all(
+        selectedPokemons.map(async (pokemon) => {
+          const details = await axios.get(pokemon.url);
+          return {
+            name: details.data.name,
+            image: details.data.sprites.front_default,
+            id: details.data.id,
+          };
+        })
+      );
 
-      setPokemons((prev) => [...prev, ...pokemonData]);
+      if (isLoadMore) {
+        setPokemons((prev) => [...prev, ...pokemonData]);
+      } else {
+        setPokemons(pokemonData);
+      }
     } catch (error) {
       console.error("Erro ao buscar Pokémon por tipo", error);
     }
   };
 
   useEffect(() => {
-    if (selectedType) {
-      setPokemons([]);
-      setOffset(0);
+    fetchPokemons(0);
+  }, []);
+
+  useEffect(() => {
+    if (selectedType === "") {
+      fetchPokemons(0);
+    } else {
       fetchPokemonsByType(selectedType, 0);
     }
+    setOffset(0);
   }, [selectedType]);
 
   const loadMorePokemons = () => {
     const newOffset = offset + 10;
     setOffset(newOffset);
-    fetchPokemonsByType(selectedType, newOffset);
+    if (selectedType === "") {
+      fetchPokemons(newOffset, true);
+    } else {
+      fetchPokemonsByType(selectedType, newOffset, true);
+    }
   };
 
   return (
     <Main>
       <Select>
         <label>Select the type of Pokemon:</label>
-        <select value={selectedType} onChange={(e) => setSelectedType(e.target.value)}>
+        <select
+          value={selectedType}
+          onChange={(e) => setSelectedType(e.target.value)}
+        >
           <option value="">Todos</option>
           <option value="fire">🔥 Fire</option>
           <option value="water">💧 Water</option>
@@ -153,7 +203,7 @@ const Select = styled.div`
   font-weight: 700;
   border: 2px solid ${({ theme }) => theme.color};
   gap: 10px;
-  & select{
+  & select {
     width: 140px;
     height: 30px;
     text-align: center;
@@ -164,4 +214,4 @@ const Select = styled.div`
     font-size: 16px;
     font-weight: 700;
   }
-`
+`;
