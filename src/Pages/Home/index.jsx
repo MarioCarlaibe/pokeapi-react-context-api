@@ -124,7 +124,7 @@ const List = styled.ul`
   }
 `;
 const Button = styled.button`
-  margin-bottom: 30px;
+  margin: 15px;
   width: 200px;
   padding: 10px;
   border-radius: 10px;
